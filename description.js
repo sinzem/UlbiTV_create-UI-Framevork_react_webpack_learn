@@ -1,8 +1,33 @@
-// npx create-react-app my-app --template typescript - приложение в ui-testing-progect
+// npx create-react-app . --template typescript - приложение в ui-testing-progect для проверки работоспособности кастомного npm пакета(ui-kit)
+
+
+// В ui-kit(кастомный npm-пакет):
 
 // npm init -y - инициализируем папку ui-kit
 // npm i -D typescript ts-loader - там же ставим зависимости для работы, ts-loader понадобится для конфигурации wp
 // npm i -D react-dom , в package.json в ui-kit добавляем его в peerDependencies(зависимости, которые будут нужны только для взаимодействия со смежными проектами - ui-testing-progect в д.с)
+// npm i -D @types/react
+// tsconfig.json - создаем в папке ui-kit для ts(базовая конфигурация от автора)
+// npm i -D webpack webpack-cli, для настройки создаем webpack.config.js, в package.json меняем директорию запуска("./dist/index.js") и  добавляем массив с нашей сборкой("files": ["dist"])
+// npm i -D style-loader css-loader - для компиляции стилей, добавляем правила в webpack.config
+// компиляцию запускаем командой webpack(или npx webpack - перезапускаем после каждого изменения, на тестовом приложении тоже обновляем пакет(через link - описание ниже))
+
+
+// npm link - подключаем пакеты друг к другу на одном компьютере - устанавливаем в обеих папках, в фреймворке запускаем просто npm link, в приложении - с названием фреймворка(npm link ui-kit - после подключения зависимость появляется в node_modules) 
+
+// npm unlink name (npm unlink ui-kit) - анлинкуем пакет для дальнейшей публикации на сайте npm пакетов(npmjs.com) - регистрируемся, логинимся. Для публикации обязательно название пакета(уникальное) и номер новой версии(в package.json). Через терминал логинимся на сайте из папки пакета через npm login, вносим свой логин и пароль, далее npm publish - пакет опубликован и доступен для установки, как и все пакеты - npm i ui-kit в д.с
+
+// При внесении изменений в пакет меняем версию в package.json, собираем через webpack и заново запускаем npm publish, в приложении соответственно нужно обновить версию 
+
+// В ui-kit - npm version patch, в package.json добавляем script "pub": "npx webpack && npm version patch && npm publish" - запускаем все эти команды npm run pub
+
+
+// Storybook - для разработки и тестирования UI компонентов
+    // npx sb init -builder webpack5 - устанавливаем в свой кастомный пакет(ui-kit) -- выдало ошибку
+        // Поставил 
+        // npx storybook@latest init - автоматически установилось и запустилось или запускаем  npm run storybook
+        // npm install --save-dev @storybook/react-vite (для ручной установки - не ставил)
+        // В ui-kit появилась папка storybook и stories. Cамо приложение представляет собой конструктор компонентов, изначально есть кнопка, header и page, последние удаляем, кнопку переделываем на свою из пакета ui-kit - для этого останавливаем пакет, удаляем кроме Button.stories.ts, из него копируем код в свой кастомный MyButton.stories.tsx, меняем встроенные типы, аргументы и названия элемента на свои и получаем свой элемент в приложении Storybook - удобно для тестирования в команде разработчиков
 
 
 
